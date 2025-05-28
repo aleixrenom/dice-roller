@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import NamedRoll from "./components/named_roll";
 
 export default function Index() {
   return (
@@ -15,7 +16,21 @@ export default function Index() {
       </View>
       {/* Rolls List Area */}
       <View style={styles.rollsArea}>
-        <Text>Rolls List goes here</Text>
+        <NamedRoll
+          name="Attack Roll"
+          description="1d20 + 5"
+          result={17}
+        />
+        <NamedRoll
+          name="Fireball Damage"
+          description="8d6"
+          result={28}
+        />
+        <NamedRoll
+          name="Stealth Check"
+          description="1d20 + 3"
+          result={14}
+        />
       </View>
     </View>
   );
