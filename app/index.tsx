@@ -1,7 +1,39 @@
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NamedRoll from "./components/named_roll";
+import { rollDiceString } from "./utils/dice";
+
+const ROLLS = [
+  {
+    name: "Attack Roll",
+    description: "1d20 + 5",
+  },
+  {
+    name: "Fireball Damage",
+    description: "8d6",
+  },
+  {
+    name: "Stealth Check with Guidance",
+    description: "1d20 + 3 + 1d4",
+  },
+];
 
 export default function Index() {
+  const [results, setResults] = useState<(number | undefined)[]>([
+    undefined,
+    undefined,
+    undefined,
+  ]);
+
+  const handleRoll = (idx: number) => {
+    const roll = rollDiceString(ROLLS[idx].description);
+    setResults((prev) => {
+      const next = [...prev];
+      next[idx] = roll.total;
+      return next;
+    });
+  };
+
   return (
     <View style={styles.container}>
       {/* Top Bar */}
@@ -16,21 +48,16 @@ export default function Index() {
       </View>
       {/* Rolls List Area */}
       <View style={styles.rollsArea}>
-        <NamedRoll
-          name="Attack Roll"
-          description="1d20 + 5"
-          result={17}
-        />
-        <NamedRoll
-          name="Fireball Damage"
-          description="8d6"
-          result={28}
-        />
-        <NamedRoll
-          name="Stealth Check"
-          description="1d20 + 3"
-          result={14}
-        />
+        {ROLLS.map((roll, idx) => (
+          <NamedRoll
+            key={roll.name}
+            name={roll.name}
+            description={roll.description}
+            result={results[idx]}
+            onRoll={() => handleRoll(idx)}
+            onModifiers={() => {}}
+          />
+        ))}
       </View>
     </View>
   );

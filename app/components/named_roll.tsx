@@ -1,13 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-type NamedRollProps = {
-  name: string;
-  description: string;
-  result?: string | number;
-  onRoll?: () => void;
-  onModifiers?: () => void;
-};
+import { NamedRollProps } from "../types";
 
 export default function NamedRoll({
   name,

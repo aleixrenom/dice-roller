@@ -33,3 +33,7 @@ A tabletop RPG (TTRPG) dice roller application designed for personal use. The ap
 - Exporting character profiles
 - Database
 - Special roll types (advantage, disadvantage, exploding dice, etc.)
+
+# Additional notes
+
+- Future option for dice rolling: https://dice-roller.github.io/documentation/
