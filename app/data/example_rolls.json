@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Attack Roll",
+    "description": "1d20 + 5"
+  },
+  {
+    "name": "Fireball Damage",
+    "description": "8d6"
+  },
+  {
+    "name": "Stealth Check with Guidance",
+    "description": "1d20 + 3 + 1d4"
+  }
+]

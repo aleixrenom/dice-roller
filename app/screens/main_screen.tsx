@@ -1,29 +1,16 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NamedRoll from "../components/named_roll";
+import rollsData from "../data/example_rolls.json";
+import type { NamedRollProps } from "../types";
 import { rollDiceString } from "../utils/dice";
 
-const ROLLS = [
-  {
-    name: "Attack Roll",
-    description: "1d20 + 5",
-  },
-  {
-    name: "Fireball Damage",
-    description: "8d6",
-  },
-  {
-    name: "Stealth Check with Guidance",
-    description: "1d20 + 3 + 1d4",
-  },
-];
+const ROLLS: NamedRollProps[] = rollsData;
 
 export default function MainScreen() {
-  const [results, setResults] = useState<(number | undefined)[]>([
-    undefined,
-    undefined,
-    undefined,
-  ]);
+  const [results, setResults] = useState<(number | undefined)[]>(
+    Array(ROLLS.length).fill(undefined)
+  );
 
   const handleRoll = (idx: number) => {
     const roll = rollDiceString(ROLLS[idx].description);
