@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NamedRollProps } from "../types";
+import ModifiersModal from "./modifiers_modal";
 
 export default function NamedRoll({
   name,
@@ -9,6 +10,13 @@ export default function NamedRoll({
   onRoll,
   onModifiers,
 }: NamedRollProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModifiersPress = () => {
+    setModalVisible(true);
+    if (onModifiers) onModifiers();
+  };
+
   return (
     <View style={styles.container}>
       {/* Left: Result and Info */}
@@ -26,10 +34,18 @@ export default function NamedRoll({
         <TouchableOpacity style={styles.rollButton} onPress={onRoll}>
           <Text style={styles.rollButtonText}>Roll</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.modifiersButton} onPress={onModifiers}>
+        <TouchableOpacity
+          style={styles.modifiersButton}
+          onPress={handleModifiersPress}
+        >
           <Text style={styles.modifiersButtonText}>Modifiers</Text>
         </TouchableOpacity>
       </View>
+      {/* Modifiers Modal */}
+      <ModifiersModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
