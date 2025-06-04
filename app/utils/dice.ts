@@ -11,8 +11,8 @@ export function rollDiceString(notation: string): RollResult {
   const modifiers: number[] = [];
 
   for (let part of parts) {
-    // Handle leading "+"
-    if (part.startsWith("+")) part = part.slice(1);
+    if (!part.trim() || part === "+") continue; // Skip empty or lone '+'
+    if (part.startsWith("+")) part = part.slice(1); // Handle leading '+' to avoid any possible regex errors
 
     // Dice pattern: e.g., "1d20", "d6"
     const diceMatch = /^(\d*)d(\d+)$/i.exec(part);

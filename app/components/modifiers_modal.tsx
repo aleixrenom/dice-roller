@@ -2,20 +2,29 @@ import React from "react";
 import {
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import type { ModifierOption as ModifierOptionType } from "../types";
+import ModifierOption from "./modifier_option";
 
 type ModifiersModalProps = {
   visible: boolean;
   onClose: () => void;
+  modifiers?: ModifierOptionType[];
+  selectedModifiers?: number[];
+  onToggleModifier?: (modIdx: number) => void;
 };
 
 export default function ModifiersModal({
   visible,
   onClose,
+  modifiers = [],
+  selectedModifiers = [],
+  onToggleModifier,
 }: ModifiersModalProps) {
   return (
     <Modal
@@ -27,7 +36,21 @@ export default function ModifiersModal({
       <Pressable style={styles.overlay} onPress={onClose}>
         <View style={styles.modalBox} onStartShouldSetResponder={() => true}>
           <Text style={styles.title}>Select Modifiers</Text>
-          {/* Placeholder for future modifier selection UI */}
+          <ScrollView style={styles.modifiersList}>
+            {modifiers.length === 0 && (
+              <Text style={{ color: "#888", textAlign: "center" }}>
+                No modifiers available.
+              </Text>
+            )}
+            {modifiers.map((mod, idx) => (
+              <ModifierOption
+                key={mod.label}
+                label={mod.label}
+                checked={selectedModifiers.includes(idx)}
+                onToggle={() => onToggleModifier && onToggleModifier(idx)}
+              />
+            ))}
+          </ScrollView>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
@@ -55,10 +78,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 24,
+    marginBottom: 16,
+  },
+  modifiersList: {
+    maxHeight: 200,
+    alignSelf: "stretch",
+    marginBottom: 16,
   },
   closeButton: {
-    marginTop: 24,
+    marginTop: 8,
     backgroundColor: "#eee",
     paddingVertical: 10,
     paddingHorizontal: 24,

@@ -1,14 +1,32 @@
 [
   {
     "name": "Attack Roll",
-    "description": "1d20 + 5"
+    "description": "1d20 + 5",
+    "modifiers": [
+      { "label": "Bless (+1d4)", "value": "1d4" },
+      { "label": "Advantage (+5)", "value": "+5" }
+    ]
   },
   {
     "name": "Fireball Damage",
-    "description": "8d6"
+    "description": "8d6",
+    "modifiers": [
+      { "label": "Empowered Evocation (+3)", "value": "+3" },
+      { "label": "Elemental Adept (+2)", "value": "+2" }
+    ]
   },
   {
-    "name": "Stealth Check with Guidance",
-    "description": "1d20 + 3 + 1d4"
+    "name": "Stealth Check",
+    "description": "1d20 + 3",
+    "modifiers": [
+      { "label": "Guidance (+1d4)", "value": "1d4" },
+      { "label": "Pass Without Trace (+10)", "value": "+10" },
+      { "label": "Disadvantage (-5)", "value": "-5" },
+      { "label": "d6", "value": "1d6" },
+      { "label": "d8", "value": "1d8" },
+      { "label": "d10", "value": "1d10" },
+      { "label": "d12", "value": "1d12" },
+      { "label": "d14", "value": "1d14" }
+    ]
   }
 ]

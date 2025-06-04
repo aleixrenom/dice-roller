@@ -11,13 +11,36 @@ export default function MainScreen() {
   const [results, setResults] = useState<(number | undefined)[]>(
     Array(ROLLS.length).fill(undefined)
   );
+  // Track selected modifiers by roll index: { [rollIdx]: Set of selected modifier indices }
+  const [selectedModifiers, setSelectedModifiers] = useState<{
+    [rollIdx: number]: number[];
+  }>({});
 
   const handleRoll = (idx: number) => {
-    const roll = rollDiceString(ROLLS[idx].description);
+    const base = ROLLS[idx].description;
+    const mods = (ROLLS[idx].modifiers || [])
+      .filter((_, mIdx) => selectedModifiers[idx]?.includes(mIdx))
+      .map((mod) => mod.value)
+      .join(" + ");
+    const fullNotation = mods ? `${base} + ${mods}` : base;
+    const roll = rollDiceString(fullNotation);
     setResults((prev) => {
       const next = [...prev];
       next[idx] = roll.total;
       return next;
+    });
+  };
+
+  const handleToggleModifier = (rollIdx: number, modIdx: number) => {
+    setSelectedModifiers((prev) => {
+      const current = prev[rollIdx] || [];
+      const exists = current.includes(modIdx);
+      return {
+        ...prev,
+        [rollIdx]: exists
+          ? current.filter((i) => i !== modIdx)
+          : [...current, modIdx],
+      };
     });
   };
 
@@ -40,6 +63,9 @@ export default function MainScreen() {
             key={roll.name}
             name={roll.name}
             description={roll.description}
+            modifiers={roll.modifiers}
+            selectedModifiers={selectedModifiers[idx] || []}
+            onToggleModifier={(modIdx) => handleToggleModifier(idx, modIdx)}
             result={results[idx]}
             onRoll={() => handleRoll(idx)}
             onModifiers={() => {}}

@@ -3,13 +3,21 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NamedRollProps } from "../types";
 import ModifiersModal from "./modifiers_modal";
 
+type NamedRollExtendedProps = NamedRollProps & {
+  selectedModifiers?: number[];
+  onToggleModifier?: (modIdx: number) => void;
+};
+
 export default function NamedRoll({
   name,
   description,
   result,
   onRoll,
   onModifiers,
-}: NamedRollProps) {
+  modifiers = [],
+  selectedModifiers = [],
+  onToggleModifier,
+}: NamedRollExtendedProps) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleModifiersPress = () => {
@@ -22,7 +30,18 @@ export default function NamedRoll({
       {/* Left: Result and Info */}
       <View style={styles.infoArea}>
         <Text style={styles.rollName}>{name}</Text>
-        <Text style={styles.rollDescription}>{description}</Text>
+        <Text style={styles.rollDescription}>
+          {description}
+          {selectedModifiers.length > 0 && modifiers.length > 0 && (
+            <Text style={styles.selectedMods}>
+              {" "}
+              {selectedModifiers
+                .map((idx) => modifiers[idx]?.label)
+                .filter(Boolean)
+                .join(", ")}
+            </Text>
+          )}
+        </Text>
         <View style={styles.resultBox}>
           <Text style={styles.resultText}>
             {result !== undefined ? result : "-"}
@@ -45,6 +64,9 @@ export default function NamedRoll({
       <ModifiersModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
+        modifiers={modifiers}
+        selectedModifiers={selectedModifiers}
+        onToggleModifier={onToggleModifier}
       />
     </View>
   );
@@ -74,6 +96,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#888",
     marginBottom: 8,
+  },
+  selectedMods: {
+    fontSize: 13,
+    color: "#4caf50",
   },
   resultBox: {
     backgroundColor: "#fff",
