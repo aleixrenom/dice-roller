@@ -34,11 +34,10 @@ export default function NamedRoll({
           {description}
           {selectedModifiers.length > 0 && modifiers.length > 0 && (
             <Text style={styles.selectedMods}>
-              {" "}
               {selectedModifiers
-                .map((idx) => modifiers[idx]?.label)
+                .map((idx) => modifiers[idx]?.value)
                 .filter(Boolean)
-                .join(", ")}
+                .join("")}
             </Text>
           )}
         </Text>
