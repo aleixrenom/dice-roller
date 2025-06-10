@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import NamedRoll from "../components/named_roll";
 import rollsData from "../data/example_rolls.json";
 import type { NamedRollProps } from "../types";
@@ -58,19 +64,21 @@ export default function MainScreen() {
       </View>
       {/* Rolls List Area */}
       <View style={styles.rollsArea}>
-        {ROLLS.map((roll, idx) => (
-          <NamedRoll
-            key={roll.name}
-            name={roll.name}
-            description={roll.description}
-            modifiers={roll.modifiers}
-            selectedModifiers={selectedModifiers[idx] || []}
-            onToggleModifier={(modIdx) => handleToggleModifier(idx, modIdx)}
-            result={results[idx]}
-            onRoll={() => handleRoll(idx)}
-            onModifiers={() => {}}
-          />
-        ))}
+        <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
+          {ROLLS.map((roll, idx) => (
+            <NamedRoll
+              key={roll.name}
+              name={roll.name}
+              description={roll.description}
+              modifiers={roll.modifiers}
+              selectedModifiers={selectedModifiers[idx] || []}
+              onToggleModifier={(modIdx) => handleToggleModifier(idx, modIdx)}
+              result={results[idx]}
+              onRoll={() => handleRoll(idx)}
+              onModifiers={() => {}}
+            />
+          ))}
+        </ScrollView>
       </View>
     </View>
   );

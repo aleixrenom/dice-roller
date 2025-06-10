@@ -72,7 +72,7 @@ export default function ModifiersModal({
                   <Text style={{ color: "#888", textAlign: "center" }}>
                     No modifiers available.
                   </Text>
-                )}{" "}
+                )}
                 {/* If there are no modifiers render the text, else... */}
                 {modifiers.map((mod, idx) => (
                   <ModifierOption
