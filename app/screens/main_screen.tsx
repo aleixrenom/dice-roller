@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import NamedRoll from "../components/named_roll";
 import rollsData from "../data/example_rolls.json";
 import type { NamedRollProps } from "../types";
@@ -51,7 +52,7 @@ export default function MainScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       {/* Top Bar */}
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.leftButton}>
@@ -80,7 +81,7 @@ export default function MainScreen() {
           ))}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
