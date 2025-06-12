@@ -13,6 +13,9 @@ I'll leave here the ideas I have for the initial design of the app.
 - Being right handed, I'll put the roll button and the modifiers button on the right, one on top of the other with the roll one being much more prominent.
 - On the left and occupying the majority of the component will be the box for the roll's result, with the name of the roll and the roll's description on top.
   - The name of the roll will be ontop of the roll's description, and the description will be the dice and modifiers that will be rolled, displayed in a fainter and smaller font.
+  - The roll's result box will occupy all its available space horizontally, leaving enough room for the two elements that will be inside:
+    1. The main roll result in the bottom, a single number, more prominent than the roll analysis.
+    2. The roll analysis, which will be a less prominent string of text above the main roll result. This text will be the same as the roll description except with the result of each die roll noted in parentheses next to the die. For example if the roll description is "1d20+5+1d4", the roll analysis may look something like "1d20 (14) + 5 + 1d4 (1)".
 
 ## Modifiers
 

@@ -19,29 +19,36 @@ export default function NamedRoll({
   onToggleModifier,
 }: NamedRollExtendedProps) {
   const [modalVisible, setModalVisible] = useState(false);
+  const ANALYSIS_PLACEHOLDER = "1d20 (13) + 5 + 1d4 (2)";
 
   const handleModifiersPress = () => {
     setModalVisible(true);
     if (onModifiers) onModifiers();
   };
 
+  // Compose the roll description with selected modifiers
+  const selectedModsString =
+    selectedModifiers.length > 0 && modifiers.length > 0
+      ? selectedModifiers
+          .map((idx) => modifiers[idx]?.value)
+          .filter(Boolean)
+          .join("")
+      : "";
+
+  const fullDescription = selectedModsString
+    ? `${description}${selectedModsString}`
+    : description;
+
   return (
     <View style={styles.container}>
-      {/* Left: Result and Info */}
-      <View style={styles.infoArea}>
+      {/* Left: Info and Result Box */}
+      <View style={styles.leftArea}>
         <Text style={styles.rollName}>{name}</Text>
-        <Text style={styles.rollDescription}>
-          {description}
-          {selectedModifiers.length > 0 && modifiers.length > 0 && (
-            <Text style={styles.selectedMods}>
-              {selectedModifiers
-                .map((idx) => modifiers[idx]?.value)
-                .filter(Boolean)
-                .join("")}
-            </Text>
-          )}
-        </Text>
+        <Text style={styles.rollDescription}>{fullDescription}</Text>
         <View style={styles.resultBox}>
+          {result !== undefined && (
+            <Text style={styles.rollAnalysis}>{ANALYSIS_PLACEHOLDER}</Text>
+          )}
           <Text style={styles.resultText}>
             {result !== undefined ? result : "-"}
           </Text>
@@ -78,13 +85,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     backgroundColor: "#f7f7f7",
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: "flex-start",
     elevation: 2,
   },
-  infoArea: {
+  leftArea: {
     flex: 1,
     marginRight: 12,
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   rollName: {
     fontSize: 18,
@@ -96,28 +103,38 @@ const styles = StyleSheet.create({
     color: "#888",
     marginBottom: 8,
   },
-  selectedMods: {
-    fontSize: 13,
-    color: "#4caf50",
-  },
   resultBox: {
     backgroundColor: "#fff",
-    borderRadius: 6,
-    paddingVertical: 12,
+    borderRadius: 8,
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    alignSelf: "flex-start",
-    marginTop: 4,
     borderWidth: 1,
     borderColor: "#ddd",
+    width: "100%",
+    minHeight: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 4,
+    height: 68, // Reserve space for both analysis and result (adjustable depending on the font size)
+  },
+  rollAnalysis: {
+    fontSize: 13,
+    color: "#555",
+    marginBottom: 2,
+    textAlign: "center",
+    minHeight: 18, // Reserve space for analysis line even if not shown
   },
   resultText: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
     color: "#333",
+    textAlign: "center",
+    minHeight: 32, // Reserve space for result number
   },
   buttonArea: {
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    marginLeft: 8,
   },
   rollButton: {
     backgroundColor: "#4caf50",
