@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { NamedRollProps } from "../types";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { NamedRollProps, RollResult } from "../types";
 import ModifiersModal from "./modifiers_modal";
 
 type NamedRollExtendedProps = NamedRollProps & {
@@ -19,7 +25,6 @@ export default function NamedRoll({
   onToggleModifier,
 }: NamedRollExtendedProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const ANALYSIS_PLACEHOLDER = "1d20 (13) + 5 + 1d4 (2)";
 
   const handleModifiersPress = () => {
     setModalVisible(true);
@@ -47,10 +52,18 @@ export default function NamedRoll({
         <Text style={styles.rollDescription}>{fullDescription}</Text>
         <View style={styles.resultBox}>
           {result !== undefined && (
-            <Text style={styles.rollAnalysis}>{ANALYSIS_PLACEHOLDER}</Text>
+            <View style={styles.analysisScroll}>
+              {/* Roll analysis is able to be scrolled horizontally when it overflows, to avoid wrapping */}
+              {/* TODO: figure out a way to visually show the user that it can be scrolled, maybe gradient */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Text style={styles.rollAnalysis}>
+                  {formatRollAnalysis(result)}
+                </Text>
+              </ScrollView>
+            </View>
           )}
           <Text style={styles.resultText}>
-            {result !== undefined ? result : "-"}
+            {result?.total !== undefined ? result.total : "-"}
           </Text>
         </View>
       </View>
@@ -76,6 +89,22 @@ export default function NamedRoll({
       />
     </View>
   );
+}
+
+// Helper to format the roll analysis string
+function formatRollAnalysis(result: RollResult) {
+  if (!result) return "";
+  // result.rolls: [{ notation: string, results: number[] }]
+  // result.modifiers: number[]
+  // result.total: number
+
+  const diceParts = result.rolls.map(
+    (roll) => `${roll.notation} (${roll.results.join(", ")})`
+  );
+  const modifierParts = result.modifiers.map((mod) =>
+    mod >= 0 ? `${mod}` : `${mod}`
+  );
+  return [...diceParts, ...modifierParts].join(" + ");
 }
 
 const styles = StyleSheet.create({
@@ -116,6 +145,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 4,
     height: 68, // Reserve space for both analysis and result (adjustable depending on the font size)
+  },
+  analysisScroll: {
+    width: "100%",
+    alignItems: "center",
+    minHeight: 18,
   },
   rollAnalysis: {
     fontSize: 13,

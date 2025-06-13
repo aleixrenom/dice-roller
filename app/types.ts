@@ -13,7 +13,7 @@ export type NamedRollProps = {
   name: string;
   description: string;
   modifiers?: ModifierOption[]; // Array of possible modifiers for this roll
-  result?: string | number;
+  result?: RollResult;
   onRoll?: () => void;
   onModifiers?: () => void;
 };

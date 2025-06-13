@@ -9,13 +9,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import NamedRoll from "../components/named_roll";
 import rollsData from "../data/example_rolls.json";
-import type { NamedRollProps } from "../types";
+import type { NamedRollProps, RollResult } from "../types";
 import { rollDiceString } from "../utils/dice";
 
 const ROLLS: NamedRollProps[] = rollsData;
 
 export default function MainScreen() {
-  const [results, setResults] = useState<(number | undefined)[]>(
+  const [results, setResults] = useState<(RollResult | undefined)[]>(
     Array(ROLLS.length).fill(undefined)
   );
   // Track selected modifiers by roll index: { [rollIdx]: Set of selected modifier indices }
@@ -30,10 +30,10 @@ export default function MainScreen() {
       .map((mod) => mod.value)
       .join(" + ");
     const fullNotation = mods ? `${base} + ${mods}` : base;
-    const roll = rollDiceString(fullNotation);
+    const roll: RollResult = rollDiceString(fullNotation);
     setResults((prev) => {
       const next = [...prev];
-      next[idx] = roll.total;
+      next[idx] = roll;
       return next;
     });
   };
