@@ -16,7 +16,7 @@
     ]
   },
   {
-    "name": "Stealth Check",
+    "name": "Stealth Check with a very long name to test the horizontal scrolling when overflow happens",
     "description": "1d20+3",
     "modifiers": [
       { "label": "Guidance (+1d4)", "value": "+1d4" },

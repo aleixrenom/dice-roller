@@ -48,13 +48,25 @@ export default function NamedRoll({
     <View style={styles.container}>
       {/* Left: Info and Result Box */}
       <View style={styles.leftArea}>
-        <Text style={styles.rollName}>{name}</Text>
-        <Text style={styles.rollDescription}>{fullDescription}</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ maxWidth: "100%" }}
+        >
+          <Text style={styles.rollName}>{name}</Text>
+        </ScrollView>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ maxWidth: "100%" }}
+        >
+          <Text style={styles.rollDescription}>{fullDescription}</Text>
+        </ScrollView>
         <View style={styles.resultBox}>
+          {/* Roll analysis is able to be scrolled horizontally when it overflows, to avoid wrapping */}
+          {/* TODO: figure out a way to visually show the user that it can be scrolled, maybe gradient */}
           {result !== undefined && (
             <View style={styles.analysisScroll}>
-              {/* Roll analysis is able to be scrolled horizontally when it overflows, to avoid wrapping */}
-              {/* TODO: figure out a way to visually show the user that it can be scrolled, maybe gradient */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <Text style={styles.rollAnalysis}>
                   {formatRollAnalysis(result)}
