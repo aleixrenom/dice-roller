@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { NamedRollProps, RollResult } from "../types";
+import { NamedRollProps, RollResult, ToggleOption } from "../types";
 import ModifiersModal from "./modifiers_modal";
+import ToggleIconButtonGroup from "./toggle_icon_button_group";
 
 type NamedRollExtendedProps = NamedRollProps & {
   selectedModifiers?: number[];
@@ -25,6 +26,13 @@ export default function NamedRoll({
   onToggleModifier,
 }: NamedRollExtendedProps) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [toggleActive, setToggleActive] = useState<string | null>(null);
+
+  const ADC_TOGGLES_TEST: ToggleOption[] = [
+    { key: "A", label: "A", color: "green" },
+    { key: "D", label: "D", color: "red" },
+    { key: "x2", label: "x2", color: "blue" },
+  ];
 
   const handleModifiersPress = () => {
     setModalVisible(true);
@@ -90,6 +98,17 @@ export default function NamedRoll({
         >
           <Text style={styles.modifiersButtonText}>Modifiers</Text>
         </TouchableOpacity>
+        <ToggleIconButtonGroup
+          options={ADC_TOGGLES_TEST}
+          value={toggleActive}
+          onChange={(key) => {
+            if (toggleActive === key) {
+              setToggleActive(null);
+            } else {
+              setToggleActive(key);
+            }
+          }}
+        />
       </View>
       {/* Modifiers Modal */}
       <ModifiersModal

@@ -11,6 +11,12 @@ I'll leave here the ideas I have for the initial design of the app.
 ## Named roll
 
 - Being right handed, I'll put the roll button and the modifiers button on the right, one on top of the other with the roll one being much more prominent.
+- Below the two buttons there will be three horizontally aligned checkboxes which will activate a different function fo the roll each: advantage, disadvantage, and critical. This checkboxes will have no label and will look like icons (A for advantage, D for disadvantage, and x2 for critical), which will be colored when active and greyed out when inactive. Only one of them can be active at a time.
+
+  - If Advantage is active it will look for the first d20 on the roll, and if there is one, change it so it will roll twice and use only the higher result.
+  - If Disadvantage is active it will do the same but take the lower roll instead.
+  - If Critical is active it will double the amount of each die on the roll.
+
 - On the left and occupying the majority of the component will be the box for the roll's result, with the name of the roll and the roll's description on top.
   - The name of the roll will be ontop of the roll's description, and the description will be the dice and modifiers that will be rolled, displayed in a fainter and smaller font.
   - The roll's result box will occupy all its available space horizontally, leaving enough room for the two elements that will be inside:
