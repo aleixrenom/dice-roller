@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { ToggleIconButtonProps } from "../types";
+import { SIZE_PRESETS, ToggleIconButtonProps } from "../types";
 
 export default function ToggleIconButton({
   label,
@@ -9,8 +9,10 @@ export default function ToggleIconButton({
   onPress,
   style,
   labelStyle,
+  size = "s",
 }: ToggleIconButtonProps) {
   const inactiveColor = "#bbb";
+  const preset = SIZE_PRESETS[size] || SIZE_PRESETS.s;
 
   return (
     <TouchableOpacity
@@ -19,6 +21,10 @@ export default function ToggleIconButton({
       style={[
         styles.button,
         {
+          width: preset.size,
+          height: preset.size,
+          borderRadius: preset.size / 2,
+          borderWidth: preset.borderWidth,
           borderColor: active ? color : inactiveColor,
         },
         style,
@@ -29,6 +35,7 @@ export default function ToggleIconButton({
           styles.label,
           {
             color: active ? color : inactiveColor,
+            fontSize: preset.fontSize,
           },
           labelStyle,
         ]}
@@ -41,16 +48,10 @@ export default function ToggleIconButton({
 
 const styles = StyleSheet.create({
   button: {
-    width: 34,
-    height: 34,
-    borderRadius: 18,
-    borderWidth: 3,
     justifyContent: "center",
     alignItems: "center",
-    // marginHorizontal: 4,
   },
   label: {
-    fontSize: 18,
     fontWeight: "bold",
   },
 });

@@ -16,6 +16,7 @@ export default function ToggleIconButtonGroup({
           key={option.key}
           label={option.label}
           color={option.color}
+          size={option.size}
           active={value === option.key}
           onPress={() => onChange(option.key)}
           style={option.style}
