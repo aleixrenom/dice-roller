@@ -13,8 +13,13 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import type { ModifierOption as ModifierOptionType } from "../types";
+import type {
+  ModifierOption as ModifierOptionType,
+  RollOptions,
+  ToggleOption,
+} from "../types";
 import ModifierOption from "./modifier_option";
+import ToggleIconButtonGroup from "./toggle_icon_button_group";
 
 type ModifiersModalProps = {
   visible: boolean;
@@ -22,7 +27,16 @@ type ModifiersModalProps = {
   modifiers?: ModifierOptionType[];
   selectedModifiers?: number[];
   onToggleModifier?: (modIdx: number) => void;
+  onToggleRollOptions?: (options: RollOptions) => void;
+  activeRollOptions?: RollOptions;
 };
+
+// Definition for the toggles used for Advantage, Disadvantage, and Critical
+const ADC_TOGGLES: ToggleOption[] = [
+  { key: "A", label: "A", color: "green", size: "s" },
+  { key: "D", label: "D", color: "red" },
+  { key: "x2", label: "x2", color: "blue" },
+];
 
 export default function ModifiersModal({
   visible,
@@ -30,11 +44,21 @@ export default function ModifiersModal({
   modifiers = [],
   selectedModifiers = [],
   onToggleModifier,
+  onToggleRollOptions,
+  activeRollOptions = {},
 }: ModifiersModalProps) {
   const { height: windowHeight } = useWindowDimensions();
   const MODAL_MAX_HEIGHT = Math.max(320, Math.floor(windowHeight * 0.8)); // 80% of window height, but at least 320px
   const MODAL_MIN_HEIGHT = 180;
   const SCROLLVIEW_MAX_HEIGHT = MODAL_MAX_HEIGHT - 140; // leave space for title and button
+
+  const currentKey = activeRollOptions.advantage
+    ? "A"
+    : activeRollOptions.disadvantage
+    ? "D"
+    : activeRollOptions.doubleDice
+    ? "x2"
+    : null;
 
   return (
     <Modal
@@ -55,8 +79,26 @@ export default function ModifiersModal({
             ]}
             onStartShouldSetResponder={() => true} // Responder = handles touch events. Avoids the above Pressurable to receive said touch events, which would close the modal.
           >
-            {/* There is three parts of this modal: the title, the scrollview, and the button. The scrollview will shrink to let the other two always be on the screen, that's why it is a scrollview instead of a regular one, so the contents will be able to be scrolled through. */}
+            {/* There is three parts of this modal: the title (with generic roll option toggles underneath), the scrollview, and the button. The scrollview will shrink to let the other two always be on the screen, that's why it is a scrollview instead of a regular one, so the contents will be able to be scrolled through. */}
             <Text style={styles.title}>Select Modifiers</Text>
+            <ToggleIconButtonGroup
+              options={ADC_TOGGLES}
+              value={currentKey}
+              onChange={(key) => {
+                if (onToggleRollOptions) {
+                  // If the clicked key is already active, toggle it off (set to none)
+                  if (key === currentKey) {
+                    onToggleRollOptions({});
+                  } else {
+                    const options: RollOptions = {};
+                    if (key === "A") options.advantage = true;
+                    else if (key === "D") options.disadvantage = true;
+                    else if (key === "x2") options.doubleDice = true;
+                    onToggleRollOptions(options);
+                  }
+                }
+              }}
+            />
             <View style={styles.listContainer}>
               <ScrollView
                 style={[

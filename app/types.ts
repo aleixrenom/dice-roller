@@ -15,10 +15,17 @@ export type ModifierOption = {
   value: string;
 };
 
+export type RollOptions = {
+  advantage?: boolean;
+  disadvantage?: boolean;
+  doubleDice?: boolean;
+};
+
 export type RollResult = {
   rolls: { notation: string; results: number[] }[];
   modifiers: number[];
   total: number;
+  rollOptions?: RollOptions;
 };
 
 export type NamedRollProps = {

@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import NamedRoll from "../components/named_roll";
 import rollsData from "../data/example_rolls.json";
-import type { NamedRollProps, RollResult } from "../types";
+import type { NamedRollProps, RollOptions, RollResult } from "../types";
 import { rollDiceString } from "../utils/dice";
 
 const ROLLS: NamedRollProps[] = rollsData;
@@ -22,6 +22,10 @@ export default function MainScreen() {
   const [selectedModifiers, setSelectedModifiers] = useState<{
     [rollIdx: number]: number[];
   }>({});
+  // Modifiers are added numbers and dice, roll options are things like advantage/disadvantage
+  const [rollOptionsByIdx, setRollOptionsByIdx] = useState<{
+    [rollIdx: number]: RollOptions;
+  }>({});
 
   const handleRoll = (idx: number) => {
     const base = ROLLS[idx].description;
@@ -30,7 +34,10 @@ export default function MainScreen() {
       .map((mod) => mod.value)
       .join(" + ");
     const fullNotation = mods ? `${base} + ${mods}` : base;
-    const roll: RollResult = rollDiceString(fullNotation);
+    const roll: RollResult = rollDiceString(
+      fullNotation,
+      rollOptionsByIdx[idx] || {}
+    );
     setResults((prev) => {
       const next = [...prev];
       next[idx] = roll;
@@ -40,15 +47,22 @@ export default function MainScreen() {
 
   const handleToggleModifier = (rollIdx: number, modIdx: number) => {
     setSelectedModifiers((prev) => {
-      const current = prev[rollIdx] || [];
-      const exists = current.includes(modIdx);
+      const current = prev[rollIdx] || []; // from the current named roll in the current state (previous from the change)...
+      const exists = current.includes(modIdx); // ...check if the modifier is already selected
       return {
         ...prev,
         [rollIdx]: exists
-          ? current.filter((i) => i !== modIdx)
-          : [...current, modIdx],
+          ? current.filter((i) => i !== modIdx) // return a new array with any values that are not the one being toggled (filter out the modifier)
+          : [...current, modIdx], // or add the modifier to the current array
       };
     });
+  };
+
+  const handleToggleRollOptions = (rollIdx: number, options: RollOptions) => {
+    setRollOptionsByIdx((prev) => ({
+      ...prev,
+      [rollIdx]: options,
+    }));
   };
 
   return (
@@ -74,6 +88,10 @@ export default function MainScreen() {
               modifiers={roll.modifiers}
               selectedModifiers={selectedModifiers[idx] || []}
               onToggleModifier={(modIdx) => handleToggleModifier(idx, modIdx)}
+              onToggleRollOptions={(options) =>
+                handleToggleRollOptions(idx, options)
+              }
+              activeRollOptions={rollOptionsByIdx[idx] || {}}
               result={results[idx]}
               onRoll={() => handleRoll(idx)}
               onModifiers={() => {}}
