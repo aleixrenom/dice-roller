@@ -31,7 +31,7 @@ export function rollDiceString(
         numDice === 1 &&
         (options.advantage || options.disadvantage)
       ) {
-        const { rolls: advRolls, chosen } = rollWithAdvantage(
+        const { rolls: advRolls, chosen } = rollAdvantageDisadvantage(
           numSides,
           !!options.advantage
         );
@@ -84,9 +84,9 @@ function rollDice(numDice: number, numSides: number): number[] {
   return results;
 }
 
-function rollWithAdvantage(
+function rollAdvantageDisadvantage(
   numSides: number,
-  advantage: boolean
+  advantage: boolean // true for advantage, false for disadvantage
 ): { rolls: number[]; chosen: number } {
   const roll1 = Math.floor(Math.random() * numSides) + 1;
   const roll2 = Math.floor(Math.random() * numSides) + 1;

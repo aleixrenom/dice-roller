@@ -33,9 +33,9 @@ type ModifiersModalProps = {
 
 // Definition for the toggles used for Advantage, Disadvantage, and Critical
 const ADC_TOGGLES: ToggleOption[] = [
-  { key: "A", label: "A", color: "green", size: "s" },
-  { key: "D", label: "D", color: "red" },
-  { key: "x2", label: "x2", color: "blue" },
+  { key: "A", label: "A", color: "#43a047", size: "s" }, // Modern green
+  { key: "D", label: "D", color: "#e53935", size: "s" }, // Modern red
+  { key: "x2", label: "x2", color: "#1e88e5", size: "s" }, // Modern blue
 ];
 
 export default function ModifiersModal({
@@ -81,24 +81,26 @@ export default function ModifiersModal({
           >
             {/* There is three parts of this modal: the title (with generic roll option toggles underneath), the scrollview, and the button. The scrollview will shrink to let the other two always be on the screen, that's why it is a scrollview instead of a regular one, so the contents will be able to be scrolled through. */}
             <Text style={styles.title}>Select Modifiers</Text>
-            <ToggleIconButtonGroup
-              options={ADC_TOGGLES}
-              value={currentKey}
-              onChange={(key) => {
-                if (onToggleRollOptions) {
-                  // If the clicked key is already active, toggle it off (set to none)
-                  if (key === currentKey) {
-                    onToggleRollOptions({});
-                  } else {
-                    const options: RollOptions = {};
-                    if (key === "A") options.advantage = true;
-                    else if (key === "D") options.disadvantage = true;
-                    else if (key === "x2") options.doubleDice = true;
-                    onToggleRollOptions(options);
+            <View style={styles.adcToggleGroupContainer}>
+              <ToggleIconButtonGroup
+                options={ADC_TOGGLES}
+                value={currentKey}
+                onChange={(key) => {
+                  if (onToggleRollOptions) {
+                    // If the clicked key is already active, toggle it off (set to none)
+                    if (key === currentKey) {
+                      onToggleRollOptions({});
+                    } else {
+                      const options: RollOptions = {};
+                      if (key === "A") options.advantage = true;
+                      else if (key === "D") options.disadvantage = true;
+                      else if (key === "x2") options.doubleDice = true;
+                      onToggleRollOptions(options);
+                    }
                   }
-                }
-              }}
-            />
+                }}
+              />
+            </View>
             <View style={styles.listContainer}>
               <ScrollView
                 style={[
@@ -173,6 +175,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
     alignSelf: "flex-start", // Overrides parent's centering. Standard in dialogs for the title to be left-aligned.
+  },
+  adcToggleGroupContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start", // Align toggles to the left
+    alignItems: "center",
+    marginBottom: 12,
+    marginTop: -7, // Pulls it a bit closer to the title
   },
   listContainer: {
     // Layout container for the ScrollView for easier, more flexible styling.
