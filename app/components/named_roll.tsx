@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   buttonArea: {
     justifyContent: "flex-end",
-    alignItems: "flex-end",
+    alignItems: "stretch", // ensures all items are the width of the widest one
     marginLeft: 8,
   },
   rollButton: {

@@ -41,5 +41,13 @@
   {
     "name": "Healing Spell",
     "description": "2d8+3"
+  },
+  {
+    "name": "Longsword Damage",
+    "description": "1d8+4",
+    "modifiers": [
+      { "label": "Versatile", "value": "+1d3-1" },
+      { "label": "Magic Weapon (+2)", "value": "+2" }
+    ]
   }
 ]
